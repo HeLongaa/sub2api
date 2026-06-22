@@ -98,6 +98,7 @@ type RedeemCodeBatchUpdateFields struct {
 	ExpiresAt NullableTimeUpdate
 	Notes     *string
 	GroupID   NullableInt64Update
+	SalePrice *float64
 
 	// Core fields are intentionally modeled only so service validation can
 	// reject payloads that try to mutate redemption value semantics in bulk.
@@ -110,6 +111,7 @@ func (f RedeemCodeBatchUpdateFields) HasChanges() bool {
 		f.ExpiresAt.Set ||
 		f.Notes != nil ||
 		f.GroupID.Set ||
+		f.SalePrice != nil ||
 		f.Type != nil ||
 		f.Value != nil
 }
@@ -254,6 +256,9 @@ func (s *RedeemService) CreateCode(ctx context.Context, code *RedeemCode) error 
 	if code.Type != RedeemTypeInvitation && code.Value == 0 {
 		return errors.New("value must not be zero")
 	}
+	if code.SalePrice < 0 {
+		return errors.New("sale_price must be greater than or equal to zero")
+	}
 	if code.Status == "" {
 		code.Status = StatusUnused
 	}
@@ -313,6 +318,9 @@ func (s *RedeemService) BatchUpdate(ctx context.Context, input *RedeemCodeBatchU
 	}
 	if input.Fields.GroupID.Set && input.Fields.GroupID.Value != nil && *input.Fields.GroupID.Value <= 0 {
 		return nil, infraerrors.BadRequest("REDEEM_CODE_GROUP_ID_INVALID", "group_id must be positive")
+	}
+	if input.Fields.SalePrice != nil && *input.Fields.SalePrice < 0 {
+		return nil, infraerrors.BadRequest("REDEEM_CODE_SALE_PRICE_INVALID", "sale_price must be greater than or equal to zero")
 	}
 
 	updated, err := s.redeemRepo.BatchUpdate(ctx, ids, input.Fields)
@@ -494,9 +502,9 @@ func (s *RedeemService) Redeem(ctx context.Context, userID int64, code string) (
 	// 事务提交成功后失效缓存
 	s.invalidateRedeemCaches(ctx, userID, redeemCode)
 
-	// 余额类正数兑换码触发邀请返利（best-effort，失败不影响兑换结果）
-	if redeemCode.Type == RedeemTypeBalance && redeemCode.Value > 0 {
-		s.tryAccrueAffiliateRebateForRedeem(ctx, userID, redeemCode.Value)
+	// 销售价按人民币录入；大于 0 时按销售价折算返利基数，否则保留余额兑换码的旧返利行为。
+	if rebateBaseAmount := redeemCodeAffiliateRebateBaseAmount(redeemCode); rebateBaseAmount > 0 {
+		s.tryAccrueAffiliateRebateForRedeem(ctx, userID, rebateBaseAmount)
 	}
 
 	// 重新获取更新后的兑换码
@@ -506,6 +514,19 @@ func (s *RedeemService) Redeem(ctx context.Context, userID int64, code string) (
 	}
 
 	return redeemCode, nil
+}
+
+func redeemCodeAffiliateRebateBaseAmount(redeemCode *RedeemCode) float64 {
+	if redeemCode == nil {
+		return 0
+	}
+	if redeemCode.SalePrice > 0 {
+		return redeemCode.SalePrice / 0.25
+	}
+	if redeemCode.Type == RedeemTypeBalance && redeemCode.Value > 0 {
+		return redeemCode.Value
+	}
+	return 0
 }
 
 // invalidateRedeemCaches 失效兑换相关的缓存

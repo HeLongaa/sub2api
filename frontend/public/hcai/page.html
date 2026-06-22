@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="HCAI 是面向国内开发者的 AI API 网关，一个入口接入主流大模型，国内直连，按量计费，开发工具友好。"
+    >
+    <title>HCAI | 一个入口调用主流 AI</title>
+    <link rel="icon" type="image/png" href="./logo.png">
+    <link rel="stylesheet" href="./style.css?v=hero-title-compact">
+  </head>
+  <body>
+    <div class="hc-page">
+      <header class="hc-header">
+        <div class="hc-notice" data-notice>
+          <div class="hc-shell hc-notice__inner">
+            <a class="hc-notice__link" href="#pricing">
+              <span class="hc-notice__badge">公告</span>
+              <span>QQ群：1094254437，每周活动将在群内抽奖以及发放共享KEY，加群参与哦~~</span>
+            </a>
+            <div class="hc-notice__actions">
+              <a class="hc-notice__contact" href="https://work.weixin.qq.com/kfid/kfc88278ce3d1c52326" target="_blank" rel="noopener noreferrer">微信客服</a>
+              <button class="hc-notice__close" type="button" aria-label="关闭公告" data-close-notice>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hc-shell">
+          <nav class="hc-nav" aria-label="主导航">
+            <a class="hc-brand" href="#top" aria-label="HCAI 首页">
+              <img class="hc-brand__logo" src="./hcai-logo.svg" alt="HCAI Logo">
+              <span class="hc-brand__copy">
+                <span class="hc-brand__name">HCAI</span>
+                <span class="hc-brand__tag">AI API Gateway</span>
+              </span>
+            </a>
+
+            <button
+              class="hc-nav__toggle"
+              type="button"
+              aria-label="打开菜单"
+              aria-expanded="false"
+              aria-controls="nav-panel"
+              data-menu-toggle
+            >
+              <span class="hc-nav__toggle-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+
+            <div class="hc-nav__panel" id="nav-panel" data-menu-panel>
+              <a href="#advantages">优势</a>
+              <a href="#models">模型</a>
+              <a href="#pricing">价格</a>
+              <a href="https://kcnlmgq06vyc.feishu.cn/wiki/ZPo2woJduiBqI1kfZUCcJRzwnJf?from=from_copylink" target="_blank" rel="noopener noreferrer">文档</a>
+              <a class="hc-button hc-button--primary hc-nav__cta" href="/login" target="_parent">进入控制台</a>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hc-hero">
+          <div class="hc-shell hc-hero__grid">
+            <div class="hc-hero__content">
+              <p class="hc-eyebrow">HCAI API</p>
+              <h1 class="hc-typing-title" data-typing-title aria-live="polite">一个入口，调用所有 AI</h1>
+              <p class="hc-hero__lead">
+                面向国内开发者的 AI API 网关。兼容主流接口，统一调用 ChatGPT、Claude、Gemini、DeepSeek 等模型，国内直连，开箱即用。
+              </p>
+
+              <div class="hc-hero__actions">
+                <a class="hc-button hc-button--primary hc-button--large" href="/login" target="_parent">开始使用</a>
+                <a class="hc-button hc-button--secondary hc-button--large" href="#pricing">查看价格</a>
+              </div>
+
+              <div class="hc-trust-row" aria-label="平台核心标签">
+                <span class="hc-trust-pill">多模型</span>
+                <span class="hc-trust-pill">国内直连</span>
+                <span class="hc-trust-pill">按量计费</span>
+                <span class="hc-trust-pill">工具兼容</span>
+              </div>
+            </div>
+
+            <div class="hc-hero__visual" aria-label="HCAI 接入预览">
+              <div class="hc-terminal">
+                <div class="hc-terminal__bar">
+                  <div class="hc-terminal__dots" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <span>hcai — api gateway</span>
+                  <strong>Ready</strong>
+                </div>
+
+                <div class="hc-terminal__body">
+                  <div class="hc-code-line"><span>$</span> export BASE_URL=https://ai.hctopup.com/v1</div>
+                  <div class="hc-code-line"><span>$</span> export OPENAI_API_KEY=sk-hcai***</div>
+                  <div class="hc-code-line"><span>$</span> codex / claude / cursor</div>
+                  <div class="hc-terminal__success">✓ 接入完成</div>
+                </div>
+
+                <div class="hc-terminal__metrics">
+                  <div>
+                    <strong>100+</strong>
+                    <span>模型</span>
+                  </div>
+                  <div>
+                    <strong>99.9%</strong>
+                    <span>可用</span>
+                  </div>
+                  <div>
+                    <strong>1 行</strong>
+                    <span>接入</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="hc-chat-project" id="hc-chat">
+          <div class="hc-shell hc-chat-project__inner">
+            <div class="hc-chat-project__copy">
+              <p class="hc-eyebrow">HC CHAT</p>
+              <h2>HCAI-CHAT 开启内测，内测期间免费使用</h2>
+              <p>内测期限名额免费，支持 1K / 2K / 4K 生图，支持文生视频、图生视频，并可直接体验各顶级模型问答。</p>
+              <div class="hc-chat-project__pills" aria-label="HC CHAT 亮点">
+                <span>限名额免费</span>
+                <span>1K / 2K / 4K 生图</span>
+                <span>视频生成</span>
+                <span>PR 奖励</span>
+              </div>
+            </div>
+
+            <div class="hc-chat-project__panel" aria-label="HC CHAT 项目说明">
+              <div class="hc-chat-project__panel-head">
+                <span>欢迎来到 HCAI-CHAT</span>
+                <strong>Beta</strong>
+              </div>
+              <div class="hc-chat-project__items">
+                <span>支持文生视频 / 图生视频</span>
+                <span>支持各顶级模型问答</span>
+                <span>开发者与用户共创：用户提交反馈与需求，开发者修改需求并开发实用功能，均可获得中转站额度 / 月卡 / 现金等奖励</span>
+              </div>
+              <a class="hc-button hc-button--primary" href="http://chat.hctopup.com/" target="_blank" rel="noopener noreferrer">进入 HC CHAT</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="hc-section hc-section--tight" id="advantages">
+          <div class="hc-shell">
+            <div class="hc-section__head">
+              <p class="hc-eyebrow">核心优势</p>
+              <h2>接入更少，选择更多</h2>
+            </div>
+
+            <div class="hc-advantage-grid">
+              <article class="hc-feature-card">
+                <span class="hc-feature-card__icon">01</span>
+                <h3>统一入口</h3>
+                <p>一个 URL，一个 Key，调用多家模型。</p>
+              </article>
+              <article class="hc-feature-card">
+                <span class="hc-feature-card__icon">02</span>
+                <h3>国内直连</h3>
+                <p>无需额外代理，打开即用。</p>
+              </article>
+              <article class="hc-feature-card">
+                <span class="hc-feature-card__icon">03</span>
+                <h3>成本透明</h3>
+                <p>余额、Token、额度消耗清晰可查。</p>
+              </article>
+              <article class="hc-feature-card">
+                <span class="hc-feature-card__icon">04</span>
+                <h3>工具友好</h3>
+                <p>Codex、Claude Code、Cursor 改配置即可用。</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="hc-section hc-section--models" id="models">
+          <div class="hc-shell hc-models">
+            <div class="hc-models__copy">
+              <p class="hc-eyebrow">Model Router</p>
+              <h2 class="hc-models__title" data-model-title>最新旗舰模型，一处接入</h2>
+              <p data-model-subtitle>覆盖 OpenAI、Claude、Gemini、DeepSeek、Grok、Qwen、Kimi、Llama 等主流厂商。</p>
+              <div class="hc-model-stats" aria-label="模型支持概览">
+                <span><strong>8 家</strong> 厂商</span>
+                <span><strong>旗舰</strong> 模型</span>
+                <span><strong>1 个</strong> Key</span>
+              </div>
+            </div>
+
+            <div class="hc-model-wall" aria-label="支持的最新旗舰模型">
+              <div class="hc-frontier-models">
+                <article class="hc-frontier-model is-active" data-model-name="GPT-5.5" data-model-type="OpenAI" data-model-headline="OpenAI 旗舰推理模型" data-model-copy="适合复杂推理、代码生成与多轮任务编排。">
+                  <span>OpenAI</span>
+                  <strong>GPT-5.5</strong>
+                  <small>旗舰推理与代码</small>
+                </article>
+                <article class="hc-frontier-model" data-model-name="Claude Opus 4.8" data-model-type="Anthropic" data-model-headline="Claude 复杂任务专家" data-model-copy="适合长上下文、代码理解和企业级协作。">
+                  <span>Anthropic</span>
+                  <strong>Claude Opus 4.8</strong>
+                  <small>复杂推理与编程</small>
+                </article>
+                <article class="hc-frontier-model" data-model-name="Gemini 3 Pro" data-model-type="Google" data-model-headline="Gemini 多模态模型" data-model-copy="适合文本、视觉、推理与跨模态应用。">
+                  <span>Google</span>
+                  <strong>Gemini 3 Pro</strong>
+                  <small>多模态与思考</small>
+                </article>
+                <article class="hc-frontier-model" data-model-name="DeepSeek V4-Pro" data-model-type="DeepSeek" data-model-headline="DeepSeek 高性价比推理" data-model-copy="适合高频调用、推理任务和成本敏感场景。">
+                  <span>DeepSeek</span>
+                  <strong>V4-Pro</strong>
+                  <small>高性能推理</small>
+                </article>
+                <article class="hc-frontier-model" data-model-name="Grok 4.3" data-model-type="xAI" data-model-headline="Grok 实时任务能力" data-model-copy="适合实时信息、代码辅助和快速问答。">
+                  <span>xAI</span>
+                  <strong>Grok 4.3</strong>
+                  <small>实时与代码任务</small>
+                </article>
+                <article class="hc-frontier-model" data-model-name="Qwen3.7-Max" data-model-type="Alibaba" data-model-headline="Qwen 中文与智能体" data-model-copy="适合中文业务、工具调用和 Agent 工作流。">
+                  <span>Alibaba</span>
+                  <strong>Qwen3.7-Max</strong>
+                  <small>千问旗舰模型</small>
+                </article>
+                <article class="hc-frontier-model" data-model-name="Kimi K2.6" data-model-type="Moonshot" data-model-headline="Kimi 长程代码任务" data-model-copy="适合长上下文、代码仓库理解和持续执行。">
+                  <span>Moonshot</span>
+                  <strong>Kimi K2.6</strong>
+                  <small>长程代码与 Agent</small>
+                </article>
+                <article class="hc-frontier-model" data-model-name="Llama 4 Maverick" data-model-type="Meta" data-model-headline="Llama 开源生态模型" data-model-copy="适合开源生态、多模态和可控部署场景。">
+                  <span>Meta</span>
+                  <strong>Llama 4 Maverick</strong>
+                  <small>开源多模态</small>
+                </article>
+              </div>
+
+              <div class="hc-router-card" aria-label="动态模型路由状态">
+                <div class="hc-router-card__head">
+                  <span>Live Routing</span>
+                  <strong data-router-model>GPT-5.5</strong>
+                </div>
+                <div class="hc-router-card__flow">
+                  <span>Request</span>
+                  <i></i>
+                  <span>HCAI</span>
+                  <i></i>
+                  <span data-router-type>OpenAI</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="hc-section hc-section--image" id="image2">
+          <div class="hc-shell hc-image-showcase">
+            <div class="hc-image-showcase__media">
+              <img src="./assets/image-2-showcase-CRhrZOEM.png" alt="Image-2 生图能力展示">
+            </div>
+            <div class="hc-image-showcase__content">
+              <p class="hc-eyebrow">Image-2</p>
+              <h2>图像生成，一起接入</h2>
+              <p>适合产品图、角色图和营销素材。</p>
+              <ul class="hc-check-list">
+                <li>理解长提示词</li>
+                <li>高清细节输出</li>
+                <li>支持 API 嵌入</li>
+              </ul>
+              <a class="hc-button hc-button--primary" href="https://ai-image.hctopup.com/" target="_blank" rel="noopener noreferrer">体验 Image-2</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="hc-section hc-section--pricing" id="pricing">
+          <div class="hc-shell">
+            <div class="hc-pricing-head">
+              <p class="hc-eyebrow">订阅套餐</p>
+              <h2>按模型分类，一屏看全套餐价格</h2>
+              <p>按 GPT、KIRO、Claude code 与企业接入分组展示，价格、额度和折合单价放在同一行，方便快速对比。</p>
+            </div>
+
+            <div class="hc-price-list" role="table" aria-label="订阅套餐价格列表">
+              <div class="hc-price-list__head" role="row">
+                <span>分类</span>
+                <span>套餐</span>
+                <span>额度</span>
+                <span>售价</span>
+                <span>折合单价</span>
+              </div>
+
+              <div class="hc-price-group hc-price-group--gpt" role="rowgroup">
+                <div class="hc-price-group__label">
+                  <span>GPT</span>
+                  <strong>GPT 系列模型</strong>
+                  <small class="hc-price-group__models">支持 GPT-5.5，5.4，5.4-mini，image-2</small>
+                </div>
+                <div class="hc-price-group__rows">
+                  <div class="hc-price-row" role="row">
+                    <span>余额直充</span>
+                    <span>随用随充</span>
+                    <strong>0.25 元</strong>
+                    <em>折合 0.25 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>50 日卡</span>
+                    <span>50 美元额度</span>
+                    <strong>7.5 元</strong>
+                    <em>折合 0.15 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>100 日卡</span>
+                    <span>100 美元额度</span>
+                    <strong>15 元</strong>
+                    <em>折合 0.15 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>小杯月卡订阅</span>
+                    <span>月限额520刀，周限额200刀，日限额50刀</span>
+                    <strong>73 元</strong>
+                    <em>折合 0.14 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>中杯月卡订阅</span>
+                    <span>月限额1300刀，周限额500刀，日限额100刀</span>
+                    <strong>158 元</strong>
+                    <em>折合 0.12 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>大杯月卡订阅</span>
+                    <span>月限额4000刀，周限额1500刀，日限额300刀</span>
+                    <strong>479 元</strong>
+                    <em>折合 0.119 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>超大杯月卡订阅</span>
+                    <span>月限额6800刀，周限额2500刀，日限额500刀</span>
+                    <strong>808 元</strong>
+                    <em>折合 0.118 元/刀</em>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hc-price-group hc-price-group--kiro" role="rowgroup">
+                <div class="hc-price-group__label">
+                  <span>KIRO</span>
+                  <strong>Claude-Kiro</strong>
+                  <small class="hc-price-group__models">支持 Opus 4.6/4.7/4.8，Sonnet 4.5/4.6</small>
+                </div>
+                <div class="hc-price-group__rows">
+                  <div class="hc-price-row" role="row">
+                    <span>余额直充</span>
+                    <span>随用随充</span>
+                    <strong>0.4 元</strong>
+                    <em>折合 0.4 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>50 日卡</span>
+                    <span>50 美元额度</span>
+                    <strong>15 元</strong>
+                    <em>折合 0.3 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>100 日卡</span>
+                    <span>100 美元额度</span>
+                    <strong>28 元</strong>
+                    <em>折合 0.28 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>Claude Kiro月卡</span>
+                    <span>月限额520刀，周限额200刀，日限额50刀</span>
+                    <strong>129 元</strong>
+                    <em>折合 0.248 元/刀</em>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hc-price-group hc-price-group--claude" role="rowgroup">
+                <div class="hc-price-group__label">
+                  <span>Claude</span>
+                  <strong>Claude 满血 Max</strong>
+                  <small class="hc-price-group__models">支持 Opus 4.6/4.7/4.8，Sonnet 4.5/4.6</small>
+                </div>
+                <div class="hc-price-group__rows">
+                  <div class="hc-price-row" role="row">
+                    <span>余额直充</span>
+                    <span>满血通道</span>
+                    <strong>2 元</strong>
+                    <em>折合 2 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>50 日卡</span>
+                    <span>50 美元额度</span>
+                    <strong>95 元</strong>
+                    <em>折合 1.9 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>100 日卡</span>
+                    <span>100 美元额度</span>
+                    <strong>190 元</strong>
+                    <em>折合 1.8 元/刀</em>
+                  </div>
+                  <div class="hc-price-row" role="row">
+                    <span>Claude 官渠月卡</span>
+                    <span>月限额520刀，周限额200刀，日限额50刀</span>
+                    <strong>832 元</strong>
+                    <em>折合 1.6 元/刀</em>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hc-price-group hc-price-group--enterprise" role="rowgroup">
+                <div class="hc-price-group__label">
+                  <span>企业</span>
+                  <strong>企业定制方案</strong>
+                </div>
+                <div class="hc-price-group__rows">
+                  <div class="hc-price-row hc-price-row--enterprise" role="row">
+                    <span>统一接入</span>
+                    <span>企业 API / 监控 / 自动切换</span>
+                    <strong>按需定制</strong>
+                    <a href="https://work.weixin.qq.com/kfid/kfc88278ce3d1c52326" target="_blank" rel="noopener noreferrer">联系客服</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="hc-section hc-section--compact" id="faq">
+          <div class="hc-shell">
+            <div class="hc-section__head">
+              <p class="hc-eyebrow">FAQ</p>
+              <h2>常见问题解答（FAQ）</h2>
+              <p>全方位技术支持与业务保障，助您高效、稳定、透明地接入全球大模型</p>
+            </div>
+
+            <div class="hc-faq" data-faq>
+              <article class="hc-faq__item">
+                <button class="hc-faq__question" type="button" aria-expanded="false">模型纯度 —— 如何确保我调用的是真正的顶尖模型（非掉包/降级）？</button>
+                <div class="hc-faq__answer" hidden>
+                  <p>平台按模型通道独立路由，优先接入官方或高质量稳定渠道，并保留调用记录与模型标识，方便您核验实际请求与返回。</p>
+                </div>
+              </article>
+              <article class="hc-faq__item">
+                <button class="hc-faq__question" type="button" aria-expanded="false">计费透明度 —— 我如何精准掌控我的余额和 Token 消耗？</button>
+                <div class="hc-faq__answer" hidden>
+                  <p>控制台可查看余额、额度、调用记录和 Token 消耗，按量计费清晰可追踪，便于团队做预算和用量管理。</p>
+                </div>
+              </article>
+              <article class="hc-faq__item">
+                <button class="hc-faq__question" type="button" aria-expanded="false">平台稳定性 —— 如何保证平台长久运行，余额不缩水？</button>
+                <div class="hc-faq__answer" hidden>
+                  <p>我们通过多通道路由、异常切换和持续监控保障可用性；余额与套餐权益按规则保留，不因通道调整而随意缩水。</p>
+                </div>
+              </article>
+              <article class="hc-faq__item">
+                <button class="hc-faq__question" type="button" aria-expanded="false">跨境支付 —— 没有海外信用卡，如何快速开启调用？</button>
+                <div class="hc-faq__answer" hidden>
+                  <p>您无需自行准备海外信用卡或处理复杂订阅流程，直接在平台充值或购买套餐，即可通过统一 API 调用主流模型。</p>
+                </div>
+              </article>
+              <article class="hc-faq__item">
+                <button class="hc-faq__question" type="button" aria-expanded="false">隐私与安全 —— 我的数据会被用于模型二次训练吗？</button>
+                <div class="hc-faq__answer" hidden>
+                  <p>平台以转发调用和接入管理为主，不主动将您的业务数据用于模型训练；企业场景可进一步定制密钥、权限和访问策略。</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="hc-footer">
+        <div class="hc-shell hc-footer__inner">
+          <p>© 2026 HCAI. All rights reserved.</p>
+          <div class="hc-footer__links">
+            <a href="/login" target="_parent">控制台</a>
+            <a href="https://kcnlmgq06vyc.feishu.cn/wiki/ZPo2woJduiBqI1kfZUCcJRzwnJf?from=from_copylink" target="_blank" rel="noopener noreferrer">文档</a>
+            <a href="https://work.weixin.qq.com/kfid/kfc88278ce3d1c52326" target="_blank" rel="noopener noreferrer">联系客服</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="./main.js?v=hero-title-compact"></script>
+  </body>
+</html>

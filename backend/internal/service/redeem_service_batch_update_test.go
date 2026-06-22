@@ -73,3 +73,21 @@ func TestRedeemService_BatchUpdate_RejectsCoreFieldsForUsedCodes(t *testing.T) {
 	require.True(t, infraerrors.IsBadRequest(err))
 	require.False(t, repo.batchUpdateCalled)
 }
+
+func TestRedeemService_BatchUpdate_RejectsNegativeSalePrice(t *testing.T) {
+	repo := &redeemRepoStub{}
+	svc := &RedeemService{redeemRepo: repo}
+	salePrice := -1.0
+
+	result, err := svc.BatchUpdate(context.Background(), &RedeemCodeBatchUpdateInput{
+		IDs: []int64{42},
+		Fields: RedeemCodeBatchUpdateFields{
+			SalePrice: &salePrice,
+		},
+	})
+
+	require.Nil(t, result)
+	require.Error(t, err)
+	require.True(t, infraerrors.IsBadRequest(err))
+	require.False(t, repo.batchUpdateCalled)
+}

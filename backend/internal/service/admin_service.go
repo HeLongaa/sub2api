@@ -420,6 +420,7 @@ type GenerateRedeemCodesInput struct {
 	Count        int
 	Type         string
 	Value        float64
+	SalePrice    float64
 	GroupID      *int64 // 订阅类型专用：关联的分组ID
 	ValidityDays int    // 订阅类型专用：有效天数
 	ExpiresAt    *time.Time
@@ -3248,6 +3249,9 @@ func (s *adminServiceImpl) GenerateRedeemCodes(ctx context.Context, input *Gener
 	if input.ExpiresAt != nil && !input.ExpiresAt.After(time.Now()) {
 		return nil, ErrRedeemCodeExpired
 	}
+	if input.SalePrice < 0 {
+		return nil, infraerrors.BadRequest("REDEEM_CODE_SALE_PRICE_INVALID", "sale_price must be greater than or equal to zero")
+	}
 
 	// 如果是订阅类型，验证必须有 GroupID
 	if input.Type == RedeemTypeSubscription {
@@ -3274,6 +3278,7 @@ func (s *adminServiceImpl) GenerateRedeemCodes(ctx context.Context, input *Gener
 			Code:      codeValue,
 			Type:      input.Type,
 			Value:     input.Value,
+			SalePrice: input.SalePrice,
 			Status:    StatusUnused,
 			ExpiresAt: input.ExpiresAt,
 		}

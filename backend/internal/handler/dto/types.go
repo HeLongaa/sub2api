@@ -345,6 +345,7 @@ type RedeemCode struct {
 	Code      string     `json:"code"`
 	Type      string     `json:"type"`
 	Value     float64    `json:"value"`
+	SalePrice float64    `json:"sale_price"`
 	Status    string     `json:"status"`
 	UsedBy    *int64     `json:"used_by"`
 	UsedAt    *time.Time `json:"used_at"`
@@ -413,6 +414,7 @@ type BatchUpdateRedeemCodeFields struct {
 	ExpiresAt NullableTimeField  `json:"expires_at,omitempty"`
 	Notes     *string            `json:"notes,omitempty"`
 	GroupID   NullableInt64Field `json:"group_id,omitempty"`
+	SalePrice *float64           `json:"sale_price,omitempty"`
 
 	Type  *string  `json:"type,omitempty"`
 	Value *float64 `json:"value,omitempty"`

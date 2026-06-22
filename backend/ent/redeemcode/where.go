@@ -70,6 +70,11 @@ func Value(v float64) predicate.RedeemCode {
 	return predicate.RedeemCode(sql.FieldEQ(FieldValue, v))
 }
 
+// SalePrice applies equality check predicate on the "sale_price" field. It's identical to SalePriceEQ.
+func SalePrice(v float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldEQ(FieldSalePrice, v))
+}
+
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v string) predicate.RedeemCode {
 	return predicate.RedeemCode(sql.FieldEQ(FieldStatus, v))
@@ -278,6 +283,46 @@ func ValueLT(v float64) predicate.RedeemCode {
 // ValueLTE applies the LTE predicate on the "value" field.
 func ValueLTE(v float64) predicate.RedeemCode {
 	return predicate.RedeemCode(sql.FieldLTE(FieldValue, v))
+}
+
+// SalePriceEQ applies the EQ predicate on the "sale_price" field.
+func SalePriceEQ(v float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldEQ(FieldSalePrice, v))
+}
+
+// SalePriceNEQ applies the NEQ predicate on the "sale_price" field.
+func SalePriceNEQ(v float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldNEQ(FieldSalePrice, v))
+}
+
+// SalePriceIn applies the In predicate on the "sale_price" field.
+func SalePriceIn(vs ...float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldIn(FieldSalePrice, vs...))
+}
+
+// SalePriceNotIn applies the NotIn predicate on the "sale_price" field.
+func SalePriceNotIn(vs ...float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldNotIn(FieldSalePrice, vs...))
+}
+
+// SalePriceGT applies the GT predicate on the "sale_price" field.
+func SalePriceGT(v float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldGT(FieldSalePrice, v))
+}
+
+// SalePriceGTE applies the GTE predicate on the "sale_price" field.
+func SalePriceGTE(v float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldGTE(FieldSalePrice, v))
+}
+
+// SalePriceLT applies the LT predicate on the "sale_price" field.
+func SalePriceLT(v float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldLT(FieldSalePrice, v))
+}
+
+// SalePriceLTE applies the LTE predicate on the "sale_price" field.
+func SalePriceLTE(v float64) predicate.RedeemCode {
+	return predicate.RedeemCode(sql.FieldLTE(FieldSalePrice, v))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.

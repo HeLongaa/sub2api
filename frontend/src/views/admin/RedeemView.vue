@@ -48,6 +48,15 @@
               <Icon name="edit" size="md" class="mr-2" />
               {{ t('admin.redeem.batchUpdate') }}
             </button>
+            <button
+              data-test="batch-sale-price-open"
+              @click="openBatchSalePriceDialog"
+              :disabled="selectedCount === 0 || batchUpdating"
+              class="btn btn-secondary"
+            >
+              <Icon name="dollar" size="md" class="mr-2" />
+              {{ t('admin.redeem.batchSalePrice') }}
+            </button>
             <button @click="showGenerateDialog = true" class="btn btn-primary">
               {{ t('admin.redeem.generateCodes') }}
             </button>
@@ -141,6 +150,12 @@
             </span>
           </template>
 
+          <template #cell-sale_price="{ value }">
+            <span class="text-sm font-semibold text-gray-900 dark:text-white">
+              ¥{{ Number(value || 0).toFixed(2) }}
+            </span>
+          </template>
+
           <template #cell-status="{ value }">
             <span
               :class="[
@@ -226,6 +241,13 @@
               @click="openBatchUpdateDialog"
             >
               {{ t('admin.redeem.batchUpdate') }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              @click="openBatchSalePriceDialog"
+            >
+              {{ t('admin.redeem.batchSalePrice') }}
             </button>
           </div>
         </div>
@@ -396,6 +418,17 @@
                 class="input"
               />
             </div>
+            <div>
+              <label class="input-label">{{ t('admin.redeem.salePrice') }}</label>
+              <input
+                v-model.number="generateForm.sale_price"
+                type="number"
+                step="0.01"
+                min="0"
+                required
+                class="input"
+              />
+            </div>
             <div class="flex justify-end gap-3 pt-2">
               <button type="button" @click="showGenerateDialog = false" class="btn btn-secondary">
                 {{ t('common.cancel') }}
@@ -499,6 +532,28 @@
                 v-model="batchUpdateForm.group_id"
                 :options="batchGroupOptions"
                 :placeholder="t('admin.redeem.selectGroupPlaceholder')"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <input
+                  data-test="batch-field-sale-price"
+                  v-model="batchUpdateForm.update_sale_price"
+                  type="checkbox"
+                  class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                />
+                {{ t('admin.redeem.batchFields.salePrice') }}
+              </label>
+              <input
+                v-if="batchUpdateForm.update_sale_price"
+                data-test="batch-sale-price-input"
+                v-model.number="batchUpdateForm.sale_price"
+                type="number"
+                step="0.01"
+                min="0"
+                required
+                class="input"
               />
             </div>
 
@@ -724,6 +779,7 @@ const columns = computed<Column[]>(() => [
   { key: 'code', label: t('admin.redeem.columns.code') },
   { key: 'type', label: t('admin.redeem.columns.type'), sortable: true },
   { key: 'value', label: t('admin.redeem.columns.value'), sortable: true },
+  { key: 'sale_price', label: t('admin.redeem.columns.salePrice'), sortable: true },
   { key: 'status', label: t('admin.redeem.columns.status'), sortable: true },
   { key: 'used_by', label: t('admin.redeem.columns.usedBy') },
   { key: 'used_at', label: t('admin.redeem.columns.usedAt'), sortable: true },
@@ -814,7 +870,9 @@ const batchUpdateForm = reactive({
   update_notes: false,
   notes: '',
   update_group_id: false,
-  group_id: null as number | null
+  group_id: null as number | null,
+  update_sale_price: false,
+  sale_price: 0
 })
 
 type RedeemCodeExpiryOption = 'never' | '1' | '3' | '7' | 'custom'
@@ -833,6 +891,7 @@ const generateForm = reactive({
   count: 1,
   group_id: null as number | null,
   validity_days: 30,
+  sale_price: 0,
   expiry_option: 'never' as RedeemCodeExpiryOption,
   custom_expiry_days: 7
 })
@@ -973,6 +1032,8 @@ const resetBatchUpdateForm = () => {
   batchUpdateForm.notes = ''
   batchUpdateForm.update_group_id = false
   batchUpdateForm.group_id = null
+  batchUpdateForm.update_sale_price = false
+  batchUpdateForm.sale_price = 0
 }
 
 const openBatchUpdateDialog = () => {
@@ -981,6 +1042,16 @@ const openBatchUpdateDialog = () => {
     return
   }
   resetBatchUpdateForm()
+  showBatchUpdateDialog.value = true
+}
+
+const openBatchSalePriceDialog = () => {
+  if (selectedCount.value === 0) {
+    appStore.showInfo(t('admin.redeem.selectCodesFirst'))
+    return
+  }
+  resetBatchUpdateForm()
+  batchUpdateForm.update_sale_price = true
   showBatchUpdateDialog.value = true
 }
 
@@ -1013,6 +1084,14 @@ const buildBatchUpdateFields = (): BatchUpdateRedeemCodeFields | null => {
     fields.group_id =
       batchUpdateForm.group_id == null ? null : Number(batchUpdateForm.group_id)
   }
+  if (batchUpdateForm.update_sale_price) {
+    const salePrice = Number(batchUpdateForm.sale_price)
+    if (!Number.isFinite(salePrice) || salePrice < 0) {
+      appStore.showError(t('admin.redeem.salePriceInvalid'))
+      return null
+    }
+    fields.sale_price = salePrice
+  }
 
   return Object.keys(fields).length > 0 ? fields : null
 }
@@ -1029,6 +1108,10 @@ const handleGenerateCodes = async () => {
     appStore.showError(t('admin.redeem.expiryDaysRequired'))
     return
   }
+  if (!Number.isFinite(generateForm.sale_price) || generateForm.sale_price < 0) {
+    appStore.showError(t('admin.redeem.salePriceInvalid'))
+    return
+  }
 
   generating.value = true
   try {
@@ -1038,7 +1121,8 @@ const handleGenerateCodes = async () => {
       generateForm.value,
       generateForm.type === 'subscription' ? generateForm.group_id : undefined,
       generateForm.type === 'subscription' ? generateForm.validity_days : undefined,
-      expiresInDays
+      expiresInDays,
+      generateForm.sale_price
     )
     showGenerateDialog.value = false
     generatedCodes.value = result
@@ -1046,6 +1130,7 @@ const handleGenerateCodes = async () => {
     // 重置表单
     generateForm.group_id = null
     generateForm.validity_days = 30
+    generateForm.sale_price = 0
     generateForm.expiry_option = 'never'
     generateForm.custom_expiry_days = 7
     loadCodes()
@@ -1141,7 +1226,8 @@ const handleBatchUpdate = async () => {
     batchUpdateForm.update_status ||
     batchUpdateForm.update_expires_at ||
     batchUpdateForm.update_notes ||
-    batchUpdateForm.update_group_id
+    batchUpdateForm.update_group_id ||
+    batchUpdateForm.update_sale_price
   if (!hasSelectedFields) {
     appStore.showError(t('admin.redeem.noBatchFieldsSelected'))
     return

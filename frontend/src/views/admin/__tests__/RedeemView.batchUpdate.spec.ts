@@ -80,7 +80,10 @@ const DataTableStub = {
 const SelectStub = {
   props: ['modelValue', 'options'],
   emits: ['update:modelValue', 'change'],
-  setup(props: { options: Array<{ value: unknown; label: string }> }, { emit }: { emit: (event: string, ...args: unknown[]) => void }) {
+  setup(
+    props: { options: Array<{ value: unknown; label: string }> },
+    { emit }: { emit: (event: string, ...args: unknown[]) => void }
+  ) {
     const onChange = (event: Event) => {
       const raw = (event.target as HTMLSelectElement).value
       const option = props.options.find((item) => String(item.value ?? '') === raw)
@@ -118,6 +121,7 @@ describe('admin RedeemView batch update', () => {
           code: 'CODE-1',
           type: 'balance',
           value: 10,
+          sale_price: 0,
           status: 'unused',
           used_by: null,
           used_at: null,
@@ -129,6 +133,7 @@ describe('admin RedeemView batch update', () => {
           code: 'CODE-2',
           type: 'balance',
           value: 20,
+          sale_price: 0,
           status: 'unused',
           used_by: null,
           used_at: null,
@@ -183,5 +188,43 @@ describe('admin RedeemView batch update', () => {
       notes: 'maintenance'
     })
     expect(showSuccess).toHaveBeenCalledWith('admin.redeem.batchUpdateSuccess')
+  })
+
+  it('opens sale price batch update with sale price field selected', async () => {
+    const wrapper = mount(RedeemView, {
+      attachTo: document.body,
+      global: {
+        stubs: {
+          AppLayout: { template: '<div><slot /></div>' },
+          TablePageLayout: {
+            template: '<div><slot name="filters" /><slot name="table" /><slot name="pagination" /></div>'
+          },
+          DataTable: DataTableStub,
+          Pagination: true,
+          ConfirmDialog: true,
+          Select: SelectStub,
+          GroupBadge: true,
+          GroupOptionItem: true,
+          Icon: true,
+          Teleport: true
+        }
+      }
+    })
+
+    await flushPromises()
+    await wrapper.findAll('[data-test="select-code"]')[0].setValue(true)
+    await wrapper.get('[data-test="batch-sale-price-open"]').trigger('click')
+    await flushPromises()
+
+    expect(
+      (wrapper.get('[data-test="batch-field-sale-price"]').element as HTMLInputElement).checked
+    ).toBe(true)
+    await wrapper.get('[data-test="batch-sale-price-input"]').setValue(12.5)
+    await wrapper.get('[data-test="batch-update-form"]').trigger('submit')
+    await flushPromises()
+
+    expect(batchUpdateRedeemCodes).toHaveBeenCalledWith([1], {
+      sale_price: 12.5
+    })
   })
 })

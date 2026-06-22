@@ -79,6 +79,27 @@ func (_u *RedeemCodeUpdate) AddValue(v float64) *RedeemCodeUpdate {
 	return _u
 }
 
+// SetSalePrice sets the "sale_price" field.
+func (_u *RedeemCodeUpdate) SetSalePrice(v float64) *RedeemCodeUpdate {
+	_u.mutation.ResetSalePrice()
+	_u.mutation.SetSalePrice(v)
+	return _u
+}
+
+// SetNillableSalePrice sets the "sale_price" field if the given value is not nil.
+func (_u *RedeemCodeUpdate) SetNillableSalePrice(v *float64) *RedeemCodeUpdate {
+	if v != nil {
+		_u.SetSalePrice(*v)
+	}
+	return _u
+}
+
+// AddSalePrice adds value to the "sale_price" field.
+func (_u *RedeemCodeUpdate) AddSalePrice(v float64) *RedeemCodeUpdate {
+	_u.mutation.AddSalePrice(v)
+	return _u
+}
+
 // SetStatus sets the "status" field.
 func (_u *RedeemCodeUpdate) SetStatus(v string) *RedeemCodeUpdate {
 	_u.mutation.SetStatus(v)
@@ -326,6 +347,12 @@ func (_u *RedeemCodeUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	if value, ok := _u.mutation.AddedValue(); ok {
 		_spec.AddField(redeemcode.FieldValue, field.TypeFloat64, value)
 	}
+	if value, ok := _u.mutation.SalePrice(); ok {
+		_spec.SetField(redeemcode.FieldSalePrice, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedSalePrice(); ok {
+		_spec.AddField(redeemcode.FieldSalePrice, field.TypeFloat64, value)
+	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(redeemcode.FieldStatus, field.TypeString, value)
 	}
@@ -477,6 +504,27 @@ func (_u *RedeemCodeUpdateOne) SetNillableValue(v *float64) *RedeemCodeUpdateOne
 // AddValue adds value to the "value" field.
 func (_u *RedeemCodeUpdateOne) AddValue(v float64) *RedeemCodeUpdateOne {
 	_u.mutation.AddValue(v)
+	return _u
+}
+
+// SetSalePrice sets the "sale_price" field.
+func (_u *RedeemCodeUpdateOne) SetSalePrice(v float64) *RedeemCodeUpdateOne {
+	_u.mutation.ResetSalePrice()
+	_u.mutation.SetSalePrice(v)
+	return _u
+}
+
+// SetNillableSalePrice sets the "sale_price" field if the given value is not nil.
+func (_u *RedeemCodeUpdateOne) SetNillableSalePrice(v *float64) *RedeemCodeUpdateOne {
+	if v != nil {
+		_u.SetSalePrice(*v)
+	}
+	return _u
+}
+
+// AddSalePrice adds value to the "sale_price" field.
+func (_u *RedeemCodeUpdateOne) AddSalePrice(v float64) *RedeemCodeUpdateOne {
+	_u.mutation.AddSalePrice(v)
 	return _u
 }
 
@@ -756,6 +804,12 @@ func (_u *RedeemCodeUpdateOne) sqlSave(ctx context.Context) (_node *RedeemCode, 
 	}
 	if value, ok := _u.mutation.AddedValue(); ok {
 		_spec.AddField(redeemcode.FieldValue, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.SalePrice(); ok {
+		_spec.SetField(redeemcode.FieldSalePrice, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedSalePrice(); ok {
+		_spec.AddField(redeemcode.FieldSalePrice, field.TypeFloat64, value)
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(redeemcode.FieldStatus, field.TypeString, value)

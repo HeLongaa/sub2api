@@ -57,3 +57,18 @@ func TestRedeemCodeExpiry(t *testing.T) {
 		})
 	}
 }
+
+func TestRedeemCodeAffiliateRebateBaseAmount(t *testing.T) {
+	require.Equal(t, 40.0, redeemCodeAffiliateRebateBaseAmount(&RedeemCode{
+		Type:      RedeemTypeSubscription,
+		SalePrice: 10,
+	}))
+	require.Equal(t, 25.0, redeemCodeAffiliateRebateBaseAmount(&RedeemCode{
+		Type:  RedeemTypeBalance,
+		Value: 25,
+	}))
+	require.Zero(t, redeemCodeAffiliateRebateBaseAmount(&RedeemCode{
+		Type:  RedeemTypeSubscription,
+		Value: 30,
+	}))
+}

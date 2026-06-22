@@ -27,6 +27,7 @@ func (r *redeemCodeRepository) Create(ctx context.Context, code *service.RedeemC
 		SetCode(code.Code).
 		SetType(code.Type).
 		SetValue(code.Value).
+		SetSalePrice(code.SalePrice).
 		SetStatus(code.Status).
 		SetNotes(code.Notes).
 		SetValidityDays(code.ValidityDays).
@@ -54,6 +55,7 @@ func (r *redeemCodeRepository) CreateBatch(ctx context.Context, codes []service.
 			SetCode(c.Code).
 			SetType(c.Type).
 			SetValue(c.Value).
+			SetSalePrice(c.SalePrice).
 			SetStatus(c.Status).
 			SetNotes(c.Notes).
 			SetValidityDays(c.ValidityDays).
@@ -175,6 +177,8 @@ func redeemCodeListOrder(params pagination.PaginationParams) []func(*entsql.Sele
 		field = redeemcode.FieldType
 	case "value":
 		field = redeemcode.FieldValue
+	case "sale_price":
+		field = redeemcode.FieldSalePrice
 	case "status":
 		field = redeemcode.FieldStatus
 	case "used_at":
@@ -200,6 +204,7 @@ func (r *redeemCodeRepository) Update(ctx context.Context, code *service.RedeemC
 		SetCode(code.Code).
 		SetType(code.Type).
 		SetValue(code.Value).
+		SetSalePrice(code.SalePrice).
 		SetStatus(code.Status).
 		SetNotes(code.Notes).
 		SetValidityDays(code.ValidityDays)
@@ -295,6 +300,9 @@ func (r *redeemCodeRepository) batchUpdate(ctx context.Context, client *dbent.Cl
 	}
 	if fields.Notes != nil {
 		up.SetNotes(*fields.Notes)
+	}
+	if fields.SalePrice != nil {
+		up.SetSalePrice(*fields.SalePrice)
 	}
 	if fields.ExpiresAt.Set {
 		if fields.ExpiresAt.Value != nil {
@@ -417,6 +425,7 @@ func redeemCodeEntityToService(m *dbent.RedeemCode) *service.RedeemCode {
 		Code:         m.Code,
 		Type:         m.Type,
 		Value:        m.Value,
+		SalePrice:    m.SalePrice,
 		Status:       m.Status,
 		UsedBy:       m.UsedBy,
 		UsedAt:       m.UsedAt,

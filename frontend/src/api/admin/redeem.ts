@@ -62,6 +62,7 @@ export async function getById(id: number): Promise<RedeemCode> {
  * @param groupId - Group ID (required for subscription type)
  * @param validityDays - Validity days (for subscription type)
  * @param expiresInDays - Days before the code itself expires
+ * @param salePrice - CNY sale price used for affiliate rebate calculation
  * @returns Array of generated redeem codes
  */
 export async function generate(
@@ -70,12 +71,14 @@ export async function generate(
   value: number,
   groupId?: number | null,
   validityDays?: number,
-  expiresInDays?: number | null
+  expiresInDays?: number | null,
+  salePrice: number = 0
 ): Promise<RedeemCode[]> {
   const payload: GenerateRedeemCodesRequest = {
     count,
     type,
-    value
+    value,
+    sale_price: salePrice
   }
 
   // 订阅类型专用字段
