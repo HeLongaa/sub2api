@@ -504,7 +504,7 @@ func (s *RedeemService) Redeem(ctx context.Context, userID int64, code string) (
 
 	// 销售价按人民币录入；大于 0 时按销售价折算返利基数，否则保留余额兑换码的旧返利行为。
 	if rebateBaseAmount := redeemCodeAffiliateRebateBaseAmount(redeemCode); rebateBaseAmount > 0 {
-		s.tryAccrueAffiliateRebateForRedeem(ctx, userID, rebateBaseAmount)
+		s.tryAccrueAffiliateRebateForRedeem(ctx, userID, rebateBaseAmount, redeemCode.ID)
 	}
 
 	// 重新获取更新后的兑换码
@@ -569,7 +569,7 @@ func (s *RedeemService) invalidateRedeemCaches(ctx context.Context, userID int64
 	}
 }
 
-func (s *RedeemService) tryAccrueAffiliateRebateForRedeem(ctx context.Context, userID int64, amount float64) {
+func (s *RedeemService) tryAccrueAffiliateRebateForRedeem(ctx context.Context, userID int64, amount float64, redeemCodeID int64) {
 	if ctx.Value(ctxKeySkipRedeemAffiliate{}) != nil {
 		return
 	}
@@ -579,7 +579,7 @@ func (s *RedeemService) tryAccrueAffiliateRebateForRedeem(ctx context.Context, u
 	if !s.affiliateService.IsEnabled(ctx) {
 		return
 	}
-	rebate, err := s.affiliateService.AccrueInviteRebate(ctx, userID, amount)
+	rebate, err := s.affiliateService.AccrueInviteRebateForRedeem(ctx, userID, amount, redeemCodeID)
 	if err != nil {
 		logger.LegacyPrintf("service.redeem", "[Redeem] affiliate rebate failed for user %d amount %.2f: %v", userID, amount, err)
 		return

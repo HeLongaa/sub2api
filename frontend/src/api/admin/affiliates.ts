@@ -47,16 +47,25 @@ export interface AffiliateInviteRecord {
 }
 
 export interface AffiliateRebateRecord {
-  order_id: number
+  ledger_id: number
+  source_type: 'payment_order' | 'ledger' | string
+  order_id?: number | null
   out_trade_no: string
+  redeem_sale_price?: number | null
+  redeem_type: string
+  redeem_value?: number | null
+  redeem_group_name: string
+  redeem_group_platform: string
+  redeem_group_subscription_type: string
+  redeem_group_rate_multiplier?: number | null
   inviter_id: number
   inviter_email: string
   inviter_username: string
   invitee_id: number
   invitee_email: string
   invitee_username: string
-  order_amount: number
-  pay_amount: number
+  order_amount?: number | null
+  pay_amount?: number | null
   rebate_amount: number
   payment_type: string
   order_status: string

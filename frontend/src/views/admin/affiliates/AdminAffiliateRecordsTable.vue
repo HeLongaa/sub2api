@@ -58,24 +58,35 @@
           </template>
           <template #cell-order="{ row }">
             <div class="space-y-0.5">
-              <div class="font-mono text-sm text-gray-900 dark:text-white">#{{ row.order_id }}</div>
-              <div class="max-w-56 truncate text-sm text-gray-500 dark:text-dark-400">{{ row.out_trade_no }}</div>
+              <div class="font-mono text-sm text-gray-900 dark:text-white">#{{ row.order_id || row.ledger_id }}</div>
+              <div class="max-w-56 truncate text-sm text-gray-500 dark:text-dark-400">
+                {{ row.order_id ? row.out_trade_no : t('admin.affiliates.records.ledger') }}
+              </div>
             </div>
           </template>
           <template #cell-payment_type="{ row }">
-            {{ t('payment.methods.' + row.payment_type, row.payment_type || '-') }}
+            {{ row.payment_type ? t('payment.methods.' + row.payment_type, row.payment_type) : '-' }}
           </template>
           <template #cell-order_status="{ row }">
-            <OrderStatusBadge :status="row.order_status" />
+            <OrderStatusBadge v-if="row.order_status" :status="row.order_status" />
+            <span v-else class="text-sm text-gray-400 dark:text-dark-500">-</span>
           </template>
           <template #cell-total_rebate="{ row }">
             <AmountText :value="row.total_rebate" />
           </template>
           <template #cell-order_amount="{ row }">
-            <AmountText :value="row.order_amount" />
+            <NullableAmountText :value="row.order_amount" />
           </template>
           <template #cell-pay_amount="{ row }">
-            <span class="text-sm text-gray-900 dark:text-white">¥{{ formatAmount(row.pay_amount) }}</span>
+            <span v-if="row.pay_amount !== null && row.pay_amount !== undefined" class="text-sm text-gray-900 dark:text-white">¥{{ formatAmount(row.pay_amount) }}</span>
+            <span v-else class="text-sm text-gray-400 dark:text-dark-500">-</span>
+          </template>
+          <template #cell-redeem_price="{ row }">
+            <span v-if="row.redeem_sale_price !== null && row.redeem_sale_price !== undefined" class="text-sm text-gray-900 dark:text-white">¥{{ formatAmount(row.redeem_sale_price) }}</span>
+            <span v-else class="text-sm text-gray-400 dark:text-dark-500">-</span>
+          </template>
+          <template #cell-redeem_group="{ row }">
+            <RechargeGroupCell :row="row" />
           </template>
           <template #cell-rebate_amount="{ row }">
             <AmountText :value="row.rebate_amount" strong />
@@ -149,6 +160,7 @@ import TablePageLayout from '@/components/layout/TablePageLayout.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import BaseDialog from '@/components/common/BaseDialog.vue'
+import GroupBadge from '@/components/common/GroupBadge.vue'
 import Icon from '@/components/icons/Icon.vue'
 import OrderStatusBadge from '@/components/payment/OrderStatusBadge.vue'
 import type { Column } from '@/components/common/types'
@@ -157,9 +169,16 @@ import { affiliatesAPI, type AffiliateInviteRecord, type AffiliateRebateRecord, 
 import type { PaginatedResponse } from '@/types'
 import { extractI18nErrorMessage } from '@/utils/apiError'
 import { formatDateTime as formatDisplayDateTime } from '@/utils/format'
+import type { GroupPlatform, SubscriptionType } from '@/types'
 
 type RecordType = 'invites' | 'rebates' | 'transfers'
 type AffiliateRecord = AffiliateInviteRecord | AffiliateRebateRecord | AffiliateTransferRecord
+type RechargeGroupBadge = {
+  name: string
+  platform?: GroupPlatform
+  subscriptionType: SubscriptionType
+  rateMultiplier?: number
+}
 
 const props = defineProps<{
   type: RecordType
@@ -188,11 +207,13 @@ const columns = computed<Column[]>(() => {
   }
   if (props.type === 'rebates') {
     return [
-      { key: 'order', label: t('admin.affiliates.records.order'), sortable: true },
+      { key: 'order', label: t('admin.affiliates.records.source'), sortable: true },
       { key: 'inviter', label: t('admin.affiliates.records.inviter'), sortable: true },
       { key: 'invitee', label: t('admin.affiliates.records.invitee'), sortable: true },
       { key: 'order_amount', label: t('admin.affiliates.records.orderAmount'), sortable: true },
       { key: 'pay_amount', label: t('admin.affiliates.records.payAmount'), sortable: true },
+      { key: 'redeem_price', label: t('admin.affiliates.records.redeemPrice'), sortable: true },
+      { key: 'redeem_group', label: t('admin.affiliates.records.redeemGroup'), sortable: true },
       { key: 'rebate_amount', label: t('admin.affiliates.records.rebateAmount') },
       { key: 'payment_type', label: t('admin.affiliates.records.paymentType'), sortable: true },
       { key: 'order_status', label: t('admin.affiliates.records.orderStatus'), sortable: true },
@@ -316,6 +337,34 @@ function formatDateTime(value: string | null | undefined): string {
   return value ? formatDisplayDateTime(value) : '-'
 }
 
+function rechargeGroupBadge(row: AffiliateRecord): RechargeGroupBadge | null {
+  if (!('rebate_amount' in row)) return null
+  if (row.redeem_group_name) {
+    return {
+      name: row.redeem_group_name,
+      platform: groupPlatform(row.redeem_group_platform),
+      subscriptionType: groupSubscriptionType(row.redeem_group_subscription_type),
+      rateMultiplier: row.redeem_group_rate_multiplier ?? undefined,
+    }
+  }
+  if (row.source_type === 'redeem_code' && row.redeem_type === 'balance' && row.redeem_value !== null && row.redeem_value !== undefined) {
+    return {
+      name: t('admin.affiliates.records.balanceRecharge', { amount: formatAmount(row.redeem_value) }),
+      subscriptionType: 'standard',
+    }
+  }
+  return null
+}
+
+function groupPlatform(value: string): GroupPlatform {
+  if (value === 'anthropic' || value === 'openai' || value === 'gemini' || value === 'antigravity') return value
+  return 'openai'
+}
+
+function groupSubscriptionType(value: string): SubscriptionType {
+  return value === 'subscription' ? 'subscription' : 'standard'
+}
+
 async function openUserOverview(userId: number) {
   if (!userId) return
   overviewDialog.value = true
@@ -379,6 +428,27 @@ const NullableAmountText = defineComponent({
         return h('span', { class: 'text-sm text-gray-400 dark:text-dark-500' }, '-')
       }
       return h(AmountText, { value })
+    }
+  },
+})
+
+const RechargeGroupCell = defineComponent({
+  props: {
+    row: { type: Object as PropType<AffiliateRecord>, required: true },
+  },
+  setup(cellProps) {
+    return () => {
+      const badge = rechargeGroupBadge(cellProps.row)
+      if (!badge) {
+        return h('span', { class: 'text-sm text-gray-400 dark:text-dark-500' }, '-')
+      }
+      return h(GroupBadge, {
+        name: badge.name,
+        platform: badge.platform,
+        subscriptionType: badge.subscriptionType,
+        rateMultiplier: badge.rateMultiplier,
+        showRate: false,
+      })
     }
   },
 })
