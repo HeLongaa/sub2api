@@ -15,6 +15,7 @@ type CustomMenuItem struct {
 	URL        string `json:"url"`
 	PageSlug   string `json:"page_slug,omitempty"`
 	Visibility string `json:"visibility"` // "user" or "admin"
+	OpenMode   string `json:"open_mode,omitempty"` // "iframe" or "external"
 	SortOrder  int    `json:"sort_order"`
 }
 

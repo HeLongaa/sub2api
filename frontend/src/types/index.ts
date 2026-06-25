@@ -164,6 +164,8 @@ export interface SendVerifyCodeResponse {
   countdown: number
 }
 
+export type CustomMenuOpenMode = 'iframe' | 'external'
+
 export interface CustomMenuItem {
   id: string
   label: string
@@ -171,6 +173,7 @@ export interface CustomMenuItem {
   url: string
   page_slug?: string
   visibility: 'user' | 'admin'
+  open_mode?: CustomMenuOpenMode
   sort_order: number
 }
 

@@ -5148,6 +5148,23 @@
                     </select>
                   </div>
 
+                  <!-- Open Mode -->
+                  <div>
+                    <label
+                      class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-400"
+                    >
+                      {{ t("admin.settings.customMenu.openMode") }}
+                    </label>
+                    <select v-model="item.open_mode" class="input text-sm">
+                      <option value="iframe">
+                        {{ t("admin.settings.customMenu.openModeIframe") }}
+                      </option>
+                      <option value="external">
+                        {{ t("admin.settings.customMenu.openModeExternal") }}
+                      </option>
+                    </select>
+                  </div>
+
                   <!-- URL (full width) -->
                   <div class="sm:col-span-2">
                     <label
@@ -6977,6 +6994,7 @@ import type {
 } from "@/api/admin/settings";
 import type {
   AdminGroup,
+  CustomMenuItem,
   LoginAgreementDocument,
   NotifyEmailEntry,
   Proxy,
@@ -7703,6 +7721,7 @@ const form = reactive<SettingsForm>({
     icon_svg: string;
     url: string;
     visibility: "user" | "admin";
+    open_mode?: "iframe" | "external";
     sort_order: number;
   }>,
   custom_endpoints: [] as Array<{
@@ -8334,6 +8353,29 @@ async function setAndCopyOIDCRedirectUrl() {
 }
 
 // Custom menu item management
+function normalizeCustomMenuOpenMode(
+  mode: unknown,
+): "iframe" | "external" {
+  return mode === "external" ? "external" : "iframe";
+}
+
+function normalizeCustomMenuItemsForForm(items: unknown): CustomMenuItem[] {
+  if (!Array.isArray(items)) return [];
+  return items.map((item, index) => {
+    const raw = (item || {}) as Record<string, unknown>;
+    return {
+      ...raw,
+      id: typeof raw.id === "string" ? raw.id : "",
+      label: typeof raw.label === "string" ? raw.label : "",
+      icon_svg: typeof raw.icon_svg === "string" ? raw.icon_svg : "",
+      url: typeof raw.url === "string" ? raw.url : "",
+      visibility: raw.visibility === "admin" ? "admin" : "user",
+      open_mode: normalizeCustomMenuOpenMode(raw.open_mode),
+      sort_order: typeof raw.sort_order === "number" ? raw.sort_order : index,
+    };
+  });
+}
+
 function addMenuItem() {
   form.custom_menu_items.push({
     id: "",
@@ -8341,6 +8383,7 @@ function addMenuItem() {
     icon_svg: "",
     url: "",
     visibility: "user",
+    open_mode: "iframe",
     sort_order: form.custom_menu_items.length,
   });
 }
@@ -8483,6 +8526,9 @@ async function loadSettings() {
     form.backend_mode_enabled = settings.backend_mode_enabled;
     form.default_subscriptions = normalizeDefaultSubscriptionSettings(
       settings.default_subscriptions,
+    );
+    form.custom_menu_items = normalizeCustomMenuItemsForForm(
+      settings.custom_menu_items,
     );
     registrationEmailSuffixWhitelistTags.value =
       normalizeRegistrationEmailSuffixDomains(
@@ -8788,15 +8834,18 @@ async function saveSettings() {
     if (!isValidHttpUrl(form.frontend_url)) form.frontend_url = "";
     if (!isValidHttpUrl(form.doc_url)) form.doc_url = "";
     syncWeChatConnectMode();
-    const wechatStoredMode = deriveWeChatConnectStoredMode(
-      form.wechat_connect_open_enabled,
-      form.wechat_connect_mp_enabled,
-      form.wechat_connect_mobile_enabled,
-      form.wechat_connect_mode,
-    );
-    const claudeOAuthSystemPromptBlocksJSON =
-      serializeClaudeOAuthSystemPromptBlocksToJSON(
-        claudeOAuthSystemPromptBlocks.value,
+	    const wechatStoredMode = deriveWeChatConnectStoredMode(
+	      form.wechat_connect_open_enabled,
+	      form.wechat_connect_mp_enabled,
+	      form.wechat_connect_mobile_enabled,
+	      form.wechat_connect_mode,
+	    );
+	    form.custom_menu_items = normalizeCustomMenuItemsForForm(
+	      form.custom_menu_items,
+	    );
+	    const claudeOAuthSystemPromptBlocksJSON =
+	      serializeClaudeOAuthSystemPromptBlocksToJSON(
+	        claudeOAuthSystemPromptBlocks.value,
       );
     form.claude_oauth_system_prompt_blocks =
       claudeOAuthSystemPromptBlocksJSON;

@@ -1293,10 +1293,18 @@ func (h *SettingHandler) UpdateSettings(c *gin.Context) {
 			response.BadRequest(c, "Too many custom menu items (max 20)")
 			return
 		}
-		for i, item := range items {
-			if strings.TrimSpace(item.Label) == "" {
-				response.BadRequest(c, "Custom menu item label is required")
-				return
+			for i, item := range items {
+				items[i].OpenMode = strings.TrimSpace(item.OpenMode)
+				if items[i].OpenMode == "" {
+					items[i].OpenMode = "iframe"
+				}
+				if items[i].OpenMode != "iframe" && items[i].OpenMode != "external" {
+					response.BadRequest(c, "Custom menu item open_mode must be 'iframe' or 'external'")
+					return
+				}
+				if strings.TrimSpace(item.Label) == "" {
+					response.BadRequest(c, "Custom menu item label is required")
+					return
 			}
 			if len(item.Label) > maxMenuItemLabelLen {
 				response.BadRequest(c, "Custom menu item label is too long (max 50 characters)")
