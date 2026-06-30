@@ -30,3 +30,11 @@ describe('AppSidebar header styles', () => {
     expect(sidebarBrandBlockMatch?.[0]).not.toContain('overflow: hidden;')
   })
 })
+
+describe('AppSidebar admin group rendering', () => {
+  it('does not render collapsible groups again as normal links', () => {
+    expect(componentSource).toMatch(
+      /<!-- Normal item \(no children\) -->\s*<template v-else>\s*<a\s+v-if="item\.externalUrl"/
+    )
+  })
+})
