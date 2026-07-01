@@ -127,7 +127,7 @@
           </div>
         </section>
 
-        <section class="hc-chat-project" id="hc-chat">
+        <section class="hc-chat-project" id="hc-chat" hidden>
           <div class="hc-shell hc-chat-project__inner">
             <div class="hc-chat-project__copy">
               <p class="hc-eyebrow">HC CHAT</p>
@@ -285,135 +285,106 @@
           <div class="hc-shell">
             <div class="hc-pricing-head">
               <p class="hc-eyebrow">订阅套餐</p>
-              <h2>按模型分类，一屏看全套餐价格</h2>
-              <p>按 GPT、KIRO、Claude code 与企业接入分组展示，价格、额度和折合单价放在同一行，方便快速对比。</p>
+              <h2>按产品通道分组，一屏看全价格</h2>
+              <p>按 GPT、CC / Claude 与企业接入分组，产品/通道、提供方、计费方式、额度/价格、倍率同列展示，状态标签一眼可读。</p>
             </div>
 
             <div class="hc-price-list" role="table" aria-label="订阅套餐价格列表">
               <div class="hc-price-list__head" role="row">
                 <span>分类</span>
-                <span>套餐</span>
-                <span>额度</span>
-                <span>售价</span>
-                <span>折合单价</span>
+                <span>产品/通道</span>
+                <span>提供方</span>
+                <span>计费方式</span>
+                <span>额度/价格</span>
+                <span>倍率</span>
               </div>
 
               <div class="hc-price-group hc-price-group--gpt" role="rowgroup">
                 <div class="hc-price-group__label">
                   <span>GPT</span>
-                  <strong>GPT 系列模型</strong>
-                  <small class="hc-price-group__models">支持 GPT-5.5，5.4，5.4-mini，image-2</small>
+                  <strong># GPT 价格</strong>
+                  <small class="hc-price-group__models">OpenAI 标准通道与纯 Pro 号池</small>
                 </div>
                 <div class="hc-price-group__rows">
                   <div class="hc-price-row" role="row">
-                    <span>余额直充</span>
-                    <span>随用随充</span>
-                    <strong>0.25 元</strong>
-                    <em>折合 0.25 元/刀</em>
+                    <span>GPT</span>
+                    <span>OpenAI</span>
+                    <span>标准（余额）</span>
+                    <strong>0.25 元/刀</strong>
+                    <em>1x</em>
+                  </div>
+                  <div class="hc-price-row hc-price-row--offline" role="row">
+                    <span>GPT 日卡 50 刀 <b>暂时下架</b></span>
+                    <span>OpenAI</span>
+                    <span>订阅（配额）</span>
+                    <strong>$50/日</strong>
+                    <em>1x</em>
+                  </div>
+                  <div class="hc-price-row hc-price-row--offline" role="row">
+                    <span>GPT 日卡 100 刀 <b>暂时下架</b></span>
+                    <span>OpenAI</span>
+                    <span>订阅（配额）</span>
+                    <strong>$100/日</strong>
+                    <em>1x</em>
+                  </div>
+                  <div class="hc-price-row hc-price-row--offline" role="row">
+                    <span>GPT 小杯月卡订阅 <b>暂时下架</b></span>
+                    <span>OpenAI</span>
+                    <span>订阅（配额）</span>
+                    <strong>$50/日、$200/周、$520/月</strong>
+                    <em>1x</em>
+                  </div>
+                  <div class="hc-price-row hc-price-row--offline" role="row">
+                    <span>GPT 中杯月卡订阅 <b>暂时下架</b></span>
+                    <span>OpenAI</span>
+                    <span>订阅（配额）</span>
+                    <strong>$100/日、$500/周、$1300/月</strong>
+                    <em>1x</em>
+                  </div>
+                  <div class="hc-price-row hc-price-row--offline" role="row">
+                    <span>GPT 大杯月卡订阅 <b>暂时下架</b></span>
+                    <span>OpenAI</span>
+                    <span>订阅（配额）</span>
+                    <strong>$300/日、$1500/周、$4000/月</strong>
+                    <em>1x</em>
+                  </div>
+                  <div class="hc-price-row hc-price-row--offline" role="row">
+                    <span>GPT 超大杯月卡订阅 <b>暂时下架</b></span>
+                    <span>OpenAI</span>
+                    <span>订阅（配额）</span>
+                    <strong>$500/日、$2500/周、$6800/月</strong>
+                    <em>1x</em>
                   </div>
                   <div class="hc-price-row" role="row">
-                    <span>50 日卡</span>
-                    <span>50 美元额度</span>
-                    <strong>7.5 元</strong>
-                    <em>折合 0.15 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>100 日卡</span>
-                    <span>100 美元额度</span>
-                    <strong>15 元</strong>
-                    <em>折合 0.15 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>小杯月卡订阅</span>
-                    <span>月限额520刀，周限额200刀，日限额50刀</span>
-                    <strong>73 元</strong>
-                    <em>折合 0.14 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>中杯月卡订阅</span>
-                    <span>月限额1300刀，周限额500刀，日限额100刀</span>
-                    <strong>158 元</strong>
-                    <em>折合 0.12 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>大杯月卡订阅</span>
-                    <span>月限额4000刀，周限额1500刀，日限额300刀</span>
-                    <strong>479 元</strong>
-                    <em>折合 0.119 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>超大杯月卡订阅</span>
-                    <span>月限额6800刀，周限额2500刀，日限额500刀</span>
-                    <strong>808 元</strong>
-                    <em>折合 0.118 元/刀</em>
-                  </div>
-                </div>
-              </div>
-
-              <div class="hc-price-group hc-price-group--kiro" role="rowgroup">
-                <div class="hc-price-group__label">
-                  <span>KIRO</span>
-                  <strong>Claude-Kiro</strong>
-                  <small class="hc-price-group__models">支持 Opus 4.6/4.7/4.8，Sonnet 4.5/4.6</small>
-                </div>
-                <div class="hc-price-group__rows">
-                  <div class="hc-price-row" role="row">
-                    <span>余额直充</span>
-                    <span>随用随充</span>
-                    <strong>0.4 元</strong>
-                    <em>折合 0.4 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>50 日卡</span>
-                    <span>50 美元额度</span>
-                    <strong>15 元</strong>
-                    <em>折合 0.3 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>100 日卡</span>
-                    <span>100 美元额度</span>
-                    <strong>28 元</strong>
-                    <em>折合 0.28 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>Claude Kiro月卡</span>
-                    <span>月限额520刀，周限额200刀，日限额50刀</span>
-                    <strong>129 元</strong>
-                    <em>折合 0.248 元/刀</em>
+                    <span>GPT（纯 Pro 号池）</span>
+                    <span>OpenAI</span>
+                    <span>标准（余额）</span>
+                    <strong>0.5 元/刀</strong>
+                    <em>2x</em>
                   </div>
                 </div>
               </div>
 
               <div class="hc-price-group hc-price-group--claude" role="rowgroup">
                 <div class="hc-price-group__label">
-                  <span>Claude</span>
-                  <strong>Claude 满血 Max</strong>
-                  <small class="hc-price-group__models">支持 Opus 4.6/4.7/4.8，Sonnet 4.5/4.6</small>
+                  <span>CC</span>
+                  <strong># CC / Claude 价格</strong>
+                  <small class="hc-price-group__models">Anthropic Kiro 渠道与官渠</small>
                 </div>
                 <div class="hc-price-group__rows">
                   <div class="hc-price-row" role="row">
-                    <span>余额直充</span>
-                    <span>满血通道</span>
-                    <strong>2 元</strong>
-                    <em>折合 2 元/刀</em>
+                    <span>CC Kiro 渠道</span>
+                    <span>Anthropic</span>
+                    <span>标准（余额）</span>
+                    <strong>0.3 元/刀 <i>降价</i></strong>
+                    <em>1.2x <i>降价</i></em>
                   </div>
                   <div class="hc-price-row" role="row">
-                    <span>50 日卡</span>
-                    <span>50 美元额度</span>
-                    <strong>95 元</strong>
-                    <em>折合 1.9 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>100 日卡</span>
-                    <span>100 美元额度</span>
-                    <strong>190 元</strong>
-                    <em>折合 1.8 元/刀</em>
-                  </div>
-                  <div class="hc-price-row" role="row">
-                    <span>Claude 官渠月卡</span>
-                    <span>月限额520刀，周限额200刀，日限额50刀</span>
-                    <strong>832 元</strong>
-                    <em>折合 1.6 元/刀</em>
+                    <span>CC 官渠</span>
+                    <span>Anthropic</span>
+                    <span>标准（余额）</span>
+                    <strong>1.4 元/刀 <i>降价</i></strong>
+                    <em>4.8x <i>降价</i></em>
                   </div>
                 </div>
               </div>
@@ -421,13 +392,14 @@
               <div class="hc-price-group hc-price-group--enterprise" role="rowgroup">
                 <div class="hc-price-group__label">
                   <span>企业</span>
-                  <strong>企业定制方案</strong>
+                  <strong># 企业接入</strong>
                 </div>
                 <div class="hc-price-group__rows">
                   <div class="hc-price-row hc-price-row--enterprise" role="row">
-                    <span>统一接入</span>
-                    <span>企业 API / 监控 / 自动切换</span>
-                    <strong>按需定制</strong>
+                    <span>企业定制方案</span>
+                    <span>HCAI</span>
+                    <span>定制接入</span>
+                    <strong>企业 API / 监控 / 自动切换</strong>
                     <a href="https://work.weixin.qq.com/kfid/kfc88278ce3d1c52326" target="_blank" rel="noopener noreferrer">联系客服</a>
                   </div>
                 </div>
